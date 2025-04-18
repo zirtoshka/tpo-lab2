@@ -9,7 +9,7 @@ public class Tan {
         this.sin = sin;
     }
 
-    public double cot(double x) {
+    public double tan(double x) {
         double sin = this.sin.sin(x);
         double cos = this.cos.cos(x);
         if (cos == 0.0) return Double.NaN;

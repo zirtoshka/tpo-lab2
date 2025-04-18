@@ -10,7 +10,7 @@ public class Cos {
         if (Double.isNaN(x) || Double.isInfinite(x)) return Double.NaN;
 
 
-        x = Math.abs(x % Math.PI);
+        x = Math.abs(x % (2 *Math.PI));
         double res = 1;
         int n = 1;
         double term = 1;
