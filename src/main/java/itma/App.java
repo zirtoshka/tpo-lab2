@@ -1,7 +1,8 @@
 package itma;
 
-import itma.trigon.Cos;
-import itma.trigon.Sin;
+import itma.logari.Ln;
+import itma.logari.Log;
+import itma.trigon.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -14,32 +15,31 @@ import java.util.function.Function;
  */
 public class App {
     public static void main(String[] args) {
-        System.out.println((-Math.PI * 2 + Math.PI / 3) % Math.PI);
         Cos cos = new Cos();
         Sin sin = new Sin(cos);
-        System.out.println(cos.cos(-2 * Math.PI + Math.PI / 3));
-        System.out.println(sin.sin(Math.PI * 2 + Math.PI / 3));
-        System.out.println("Hello World!");
+        Ln ln = new Ln();
+        Sec sec = new Sec(cos);
+        Csc csc = new Csc(sin);
+        Cot cot = new Cot(cos, sin);
+        Tan tan = new Tan(cos, sin);
+        Log log2 =new Log(ln, 2);
+        Log log5 =new Log(ln, 5);
 
-//        Cos cos = new Cos();
-//        Sin sin = new Sin(cos);
 
         writeFunctionToCSV("cos.csv", cos::cos, -2 * Math.PI, 2 * Math.PI);
+        writeFunctionToCSV("sin.csv", sin::sin, -2 * Math.PI, 2 * Math.PI);
+        writeFunctionToCSV("ln.csv", ln::ln, 0.1, 10);
+        writeFunctionToCSV("sec.csv", sec::sec, -2 * Math.PI, 2 * Math.PI);
+        writeFunctionToCSV("csc.csv", csc::csc, -2 * Math.PI + X_STEP, 2 * Math.PI);
+        writeFunctionToCSV("cot.csv", cot::cot, -2 * Math.PI + X_STEP, 2 * Math.PI);
+        writeFunctionToCSV("tan.csv", tan::tan, -2 * Math.PI, 2 * Math.PI);
+        writeFunctionToCSV("log2.csv", log2::log, 0.1, 10);
+        writeFunctionToCSV("log5.csv", log5::log, 0.1, 10);
+//        writeFunctionToCSV("system_function.csv", systemFunction::calculate, -11 * Math.PI / 4, 10);
 
     }
 
     private static final double X_STEP = 0.01;
-
-//    private static void writeFunctionToCSV(String fileName, Function<Double, Double> function, double start, double end) {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-//            for (double x = start; x <= end; x += X_STEP) {
-//                double y = function.apply(x);
-//                writer.write(String.format(Locale.US, "%.5f,%.5f%n", x, y));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
     private static void writeFunctionToCSV(String fileName, Function<Double, Double> function, double start, double end) {

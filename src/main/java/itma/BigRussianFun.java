@@ -12,9 +12,10 @@ public class BigRussianFun {
     private final Csc csc;
     private final Tan tan;
     private final Ln ln;
-    private final Log log;
+    private final Log log2;
+    private final Log log5;
 
-    public BigRussianFun(Sin sin, Cos cos, Sec sec, Cot cot, Csc csc, Tan tan, Ln ln, Log log) {
+    public BigRussianFun(Sin sin, Cos cos, Sec sec, Cot cot, Csc csc, Tan tan, Ln ln, Log log2, Log log5) {
         this.sin = sin;
         this.cos = cos;
         this.sec = sec;
@@ -22,14 +23,15 @@ public class BigRussianFun {
         this.csc = csc;
         this.tan = tan;
         this.ln = ln;
-        this.log = log;
+        this.log2 = log2;
+        this.log5 = log5;
     }
 
     public double calculate(double x) {
         if (x > 0) {
-            return (Math.pow(log.log(x, 2) + log.log(x, 2), 3) * log.log(x, 2)
+            return (Math.pow(log2.log(x) + log2.log(x), 3) * log2.log(x)
                     / Math.pow(ln.ln(x), 2))
-                    * log.log(x, 5);
+                    * log5.log(x);
         } else {
             return
                     Math.pow((((sin.sin(x) + sec.sec(x)) / (cot.cot(x) - sec.sec(x)) - cot.cot(x)) - cos.cos(x)) / csc.csc(x)
