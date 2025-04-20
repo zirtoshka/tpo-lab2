@@ -25,17 +25,19 @@ public class App {
         Log log2 =new Log(ln, 2);
         Log log5 =new Log(ln, 5);
 
+        BigRussianFun systemFunction = new BigRussianFun(sin,cos,sec,cot,csc,tan, ln, log2,log5);
 
-        writeFunctionToCSV("cos.csv", cos::cos, -2 * Math.PI, 2 * Math.PI);
-        writeFunctionToCSV("sin.csv", sin::sin, -2 * Math.PI, 2 * Math.PI);
-        writeFunctionToCSV("ln.csv", ln::ln, 0.1, 10);
-        writeFunctionToCSV("sec.csv", sec::sec, -2 * Math.PI, 2 * Math.PI);
-        writeFunctionToCSV("csc.csv", csc::csc, -2 * Math.PI + X_STEP, 2 * Math.PI);
-        writeFunctionToCSV("cot.csv", cot::cot, -2 * Math.PI + X_STEP, 2 * Math.PI);
-        writeFunctionToCSV("tan.csv", tan::tan, -2 * Math.PI, 2 * Math.PI);
-        writeFunctionToCSV("log2.csv", log2::log, 0.1, 10);
-        writeFunctionToCSV("log5.csv", log5::log, 0.1, 10);
-//        writeFunctionToCSV("system_function.csv", systemFunction::calculate, -11 * Math.PI / 4, 10);
+        System.out.println(systemFunction.calculate(-5));
+//        writeFunctionToCSV("cos.csv", cos::cos, -2 * Math.PI, 2 * Math.PI);
+//        writeFunctionToCSV("sin.csv", sin::sin, -2 * Math.PI, 2 * Math.PI);
+//        writeFunctionToCSV("ln.csv", ln::ln, 0.1, 10);
+//        writeFunctionToCSV("sec.csv", sec::sec, -2 * Math.PI, 2 * Math.PI);
+//        writeFunctionToCSV("csc.csv", csc::csc, -2 * Math.PI + X_STEP, 2 * Math.PI);
+//        writeFunctionToCSV("cot.csv", cot::cot, -2 * Math.PI + X_STEP, 2 * Math.PI);
+//        writeFunctionToCSV("tan.csv", tan::tan, -2 * Math.PI, 2 * Math.PI);
+//        writeFunctionToCSV("log2.csv", log2::log, 0.1, 10);
+//        writeFunctionToCSV("log5.csv", log5::log, 0.1, 10);
+        writeFunctionToCSV("system_function.csv", systemFunction::calculate, -11 * Math.PI / 4, 10);
 
     }
 

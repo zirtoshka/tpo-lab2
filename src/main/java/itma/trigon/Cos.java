@@ -5,8 +5,6 @@ public class Cos {
     private final static double EPSILON = 1e-6;
 
     public double cos(double x) {
-        if (Math.abs(x) < EPSILON) throw new IllegalArgumentException("x must be greater than epsilon");
-
         if (Double.isNaN(x) || Double.isInfinite(x)) return Double.NaN;
 
 
