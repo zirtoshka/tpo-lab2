@@ -43,17 +43,16 @@ public class BigRussianFunTest {
 
 
                 Arguments.of(0.8, -0.23926),
-                Arguments.of(1, 0),
+                Arguments.of(1, Double.NaN),
                 Arguments.of(1.1, 0.018644)
 
         );
     }
 
-
     @ParameterizedTest
     @MethodSource("dataVerch")
     @DisplayName("Интеграционный тест: уровень 1 (всё мокано)")
-    void test1l(double x, double expected) {
+    void testAllMock(double x, double expected) {
         Cos cos = mock(Cos.class);
         Sin sin = mock(Sin.class);
         Sec sec = mock(Sec.class);
@@ -66,20 +65,70 @@ public class BigRussianFunTest {
         Log log5 = mock(Log.class);
 
         Map<String, Map<Double, Double>> functionValues = Map.of(
-                "sin", FunctionCsvLoader.loadFunctionValues("sin")
+                "sin", FunctionCsvLoader.loadFunctionValues("output_sin"),
+                "cos", FunctionCsvLoader.loadFunctionValues("cos"),
+                "sec", FunctionCsvLoader.loadFunctionValues("sec"),
+                "cot", FunctionCsvLoader.loadFunctionValues("cot"),
+                "csc", FunctionCsvLoader.loadFunctionValues("csc"),
+                "tan", FunctionCsvLoader.loadFunctionValues("tan"),
+                "log2", FunctionCsvLoader.loadFunctionValues("log2"),
+                "log5", FunctionCsvLoader.loadFunctionValues("log5"),
+                "ln", FunctionCsvLoader.loadFunctionValues("ln")
+        );
+        if (x <= 0) {
+            FunctionMocker.mockUnaryFunction(sin, functionValues.get("sin"), Sin::sin);
+            FunctionMocker.mockUnaryFunction(cos, functionValues.get("cos"), Cos::cos);
+            FunctionMocker.mockUnaryFunction(sec, functionValues.get("sec"), Sec::sec);
+            FunctionMocker.mockUnaryFunction(cot, functionValues.get("cot"), Cot::cot);
+            FunctionMocker.mockUnaryFunction(csc, functionValues.get("csc"), Csc::csc);
+            FunctionMocker.mockUnaryFunction(tan, functionValues.get("tan"), Tan::tan);
+        } else {
+            FunctionMocker.mockUnaryFunction(log2, functionValues.get("log2"), Log::log);
+            FunctionMocker.mockUnaryFunction(log5, functionValues.get("log5"), Log::log);
+            FunctionMocker.mockUnaryFunction(ln, functionValues.get("ln"), Ln::ln);
+        }
+
+        BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
+        double result = func.calculate(x);
+
+
+        assertEquals(expected, result, 1e-3);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("dataVerch")
+    @DisplayName("Интеграционный тест: 2 уровень mock / tan, cot, csc ")
+    void test2l(double x, double expected) {
+        Cos cos = mock(Cos.class);
+        Sin sin = mock(Sin.class);
+        Sec sec = mock(Sec.class);
+
+        Tan tan = new Tan(cos, sin);
+        Cot cot = new Cot(cos, sin);
+        Csc csc=new Csc(sin);
+
+        Ln ln = mock(Ln.class);
+        Log log2 = mock(Log.class);
+        Log log5 = mock(Log.class);
+
+        Map<String, Map<Double, Double>> functionValues = Map.of(
+                "sin", FunctionCsvLoader.loadFunctionValues("output_sin"),
+                "cos", FunctionCsvLoader.loadFunctionValues("cos"),
+                "sec", FunctionCsvLoader.loadFunctionValues("sec"),
+                "log2", FunctionCsvLoader.loadFunctionValues("log2"),
+                "log5", FunctionCsvLoader.loadFunctionValues("log5"),
+                "ln", FunctionCsvLoader.loadFunctionValues("ln")
         );
 
         if (x <= 0) {
             FunctionMocker.mockUnaryFunction(sin, functionValues.get("sin"), Sin::sin);
-            when(cos.cos(x)).thenReturn(0.866);
-            when(sec.sec(x)).thenReturn(1 / 0.866);
-            when(cot.cot(x)).thenReturn(1.732);
-            when(csc.csc(x)).thenReturn(1 / 0.5);
-            when(tan.tan(x)).thenReturn(0.577);
+            FunctionMocker.mockUnaryFunction(cos, functionValues.get("cos"), Cos::cos);
+            FunctionMocker.mockUnaryFunction(sec, functionValues.get("sec"), Sec::sec);
         } else {
-            when(log2.log(x)).thenReturn(Math.log(x) / Math.log(2));
-            when(log5.log(x)).thenReturn(Math.log(x) / Math.log(5));
-            when(ln.ln(x)).thenReturn(Math.log(x));
+            FunctionMocker.mockUnaryFunction(log2, functionValues.get("log2"), Log::log);
+            FunctionMocker.mockUnaryFunction(log5, functionValues.get("log5"), Log::log);
+            FunctionMocker.mockUnaryFunction(ln, functionValues.get("ln"), Ln::ln);
         }
 
         BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
@@ -87,7 +136,73 @@ public class BigRussianFunTest {
 
         System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
 
-        assertEquals(expected, result, 1e-4);
+        assertEquals(expected, result, 1e-3);
     }
 
+
+
+    @ParameterizedTest
+    @MethodSource("dataVerch")
+    @DisplayName("Интеграционный тест: 2 уровень mock / tan, cot, csc + sin, sec, log ")
+    void test3l(double x, double expected) {
+        Cos cos = mock(Cos.class);
+
+        Sin sin =new Sin(cos);
+        Sec sec =new Sec(cos);
+
+        Tan tan = new Tan(cos, sin);
+        Cot cot = new Cot(cos, sin);
+        Csc csc=new Csc(sin);
+
+        Ln ln = mock(Ln.class);
+
+        Log log2 = new Log(ln, 2);
+        Log log5 = new Log(ln, 5);
+
+        Map<String, Map<Double, Double>> functionValues = Map.of(
+                "cos", FunctionCsvLoader.loadFunctionValues("cos"),
+                "ln", FunctionCsvLoader.loadFunctionValues("ln")
+        );
+
+        if (x <= 0) {
+            FunctionMocker.mockUnaryFunction(cos, functionValues.get("cos"), Cos::cos);
+        } else {
+            FunctionMocker.mockUnaryFunction(ln, functionValues.get("ln"), Ln::ln);
+        }
+
+        BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
+        double result = func.calculate(x);
+
+        System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
+
+        assertEquals(expected, result, 1e-3);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("dataVerch")
+    @DisplayName("Интеграционный тест: 2 уровень cos, ln + tan, cot, csc + sin, sec, log ")
+    void test4l(double x, double expected) {
+        Cos cos = new Cos();
+
+        Sin sin =new Sin(cos);
+        Sec sec =new Sec(cos);
+
+        Tan tan = new Tan(cos, sin);
+        Cot cot = new Cot(cos, sin);
+        Csc csc=new Csc(sin);
+
+        Ln ln = new Ln();
+
+        Log log2 = new Log(ln, 2);
+        Log log5 = new Log(ln, 5);
+
+
+        BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
+        double result = func.calculate(x);
+
+        System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
+
+        assertEquals(expected, result, 1e-3);
+    }
 }

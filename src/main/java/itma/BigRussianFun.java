@@ -34,9 +34,44 @@ public class BigRussianFun {
                     * log5.log(x);
         } else {
             return
-                    Math.pow((((sin.sin(x) + sec.sec(x)) / (cot.cot(x) - sec.sec(x)) - cot.cot(x)) - cos.cos(x)) / csc.csc(x)
-                            - ((sec.sec(x) * (csc.csc(x) * sin.sin(x))) + tan.tan(x)), 3)
-                            + Math.pow(csc.csc(x), 3);
+
+                    ( Math.pow(
+                            (
+                                    (
+                                            (
+                                                    (sin.sin(x) + sec.sec(x)) /
+                                                            (cot.cot(x) - sec.sec(x))
+                                            )
+                                                    - cot.cot(x)
+                                    )
+                                            - cos.cos(x)
+                            )
+                                    / csc.csc(x)
+                                    - (
+                                    sec.sec(x) * csc.csc(x) * sin.sin(x) + tan.tan(x)
+                            ),
+                            3
+                    )
+                            + Math.pow(csc.csc(x), 3))
+                            * (
+                            (
+                                    (
+                                            (
+                                                    (csc.csc(x) * (csc.csc(x) - cot.cot(x)))
+                                                            / tan.tan(x)
+                                            )
+                                                    * sin.sin(x)
+                                                    - (
+                                                    (sin.sin(x) - (sin.sin(x) + csc.csc(x)))
+                                                            + (
+                                                            (cot.cot(x) / sec.sec(x)) / sec.sec(x)
+                                                    )
+                                            )
+                                    )
+                                            / tan.tan(x)
+                            )
+                    )
+                            - (sec.sec(x) / sec.sec(x));
 
         }
     }

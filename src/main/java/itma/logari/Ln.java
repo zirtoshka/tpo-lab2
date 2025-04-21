@@ -4,6 +4,7 @@ public class Ln {
     private final static double EPSILON = 1e-6;
 
     public double ln(double x) {
+        System.out.println(x);
         if (x <= 0.0 || Double.isNaN(x)) return Double.NaN;
 
         if (Double.isInfinite(x)) return Double.POSITIVE_INFINITY;
