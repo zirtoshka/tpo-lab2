@@ -1,6 +1,6 @@
 package itma.trigon;
 
-public class Cot {
+public class Cot extends Sec {
     private final Cos cos;
     private final Sin sin;
 
