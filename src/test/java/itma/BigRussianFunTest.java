@@ -14,10 +14,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BigRussianFunTest {
-    private static final double DELTA = 0.05;
 
     private static Stream<Arguments> dataVerch() {
         return Stream.of(
@@ -134,8 +132,6 @@ public class BigRussianFunTest {
         BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
         double result = func.calculate(x);
 
-        System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
-
         assertEquals(expected, result, 1e-3);
     }
 
@@ -173,8 +169,6 @@ public class BigRussianFunTest {
         BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
         double result = func.calculate(x);
 
-        System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
-
         assertEquals(expected, result, 1e-3);
     }
 
@@ -200,8 +194,6 @@ public class BigRussianFunTest {
 
         BigRussianFun func = new BigRussianFun(sin, cos, sec, cot, csc, tan, ln, log2, log5);
         double result = func.calculate(x);
-
-        System.out.println("x = " + x + ", result = " + result + ", expected = " + expected);
 
         assertEquals(expected, result, 1e-3);
     }
