@@ -1,14 +1,18 @@
-//package itma;
-//
-//import itma.logari.Ln;
-//import itma.logari.Log;
-//import itma.trigon.*;
-//import java.io.FileWriter;
-//import java.io.IOException;
-//import java.util.function.Function;
-//
-//
-//public class App {
+package itma;
+
+import itma.logari.Ln;
+import itma.logari.Log;
+import itma.trigon.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+
+public class App {
 //    public static void main(String[] args) {
 //        Cos cos = new Cos();
 //        Sin sin = new Sin(cos);
@@ -48,4 +52,33 @@
 //            e.printStackTrace();
 //        }
 //    }
-//}
+
+    public static void main(String[] args) throws Exception {
+        String inputPath = "sin.csv";
+        String outputPath = "sec.csv";
+
+
+
+        List<String> lines = Files.readAllLines(Paths.get(inputPath));
+        List<String> output = new ArrayList<>();
+        output.add("x,value"); // заголовок
+
+        for (String line : lines) {
+            if (line.trim().isEmpty() || line.startsWith("x")) continue;
+
+            String[] parts = line.split(",");
+            if (parts.length < 1) continue;
+
+            try {
+                double x = Double.parseDouble(parts[0]);
+                double y =Math.tan(x);
+                output.add(x + "," + y);
+            } catch (Exception e) {
+                output.add(parts[0] + ",ERROR");
+            }
+        }
+
+        Files.write(Paths.get(outputPath), output);
+        System.out.println("Файл сохранён: " + outputPath);
+    }
+}
